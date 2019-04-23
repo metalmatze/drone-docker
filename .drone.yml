@@ -1,0 +1,73 @@
+---
+kind: pipeline
+name: testing
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+- name: vet
+  pull: always
+  image: golang:1.12
+  commands:
+  - go vet ./...
+  environment:
+    GO111MODULE: on
+
+- name: test
+  pull: always
+  image: golang:1.12
+  commands:
+  - go test -cover ./...
+  environment:
+    GO111MODULE: on
+
+---
+kind: pipeline
+name: foobarLinux
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+- name: base
+  image: base
+  commands:
+  - echo base
+
+- name: go
+  pull: always
+  image: golang:1.12
+  commands:
+  - go env
+  environment:
+    GO111MODULE: on
+
+---
+kind: pipeline
+name: foobarLinuxARM64
+
+platform:
+  os: linux
+  arch: arm64
+
+steps:
+- name: go
+  pull: always
+  image: golang:arm
+  commands:
+  - go env
+  environment:
+    GO111MODULE: on
+
+---
+kind: pipeline
+name: foobarWindows
+
+platform:
+  os: windows
+  arch: amd64
+
+...
